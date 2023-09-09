@@ -1,0 +1,20 @@
+{
+  "name": "product-manager",
+  "devDependencies": {
+    "@babel/cli": "^7.22.15",
+    "@babel/core": "^7.22.15",
+    "@babel/preset-env": "^7.22.15"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-property-mutators": "^7.22.15"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel --plugins @babel/plugin-transform-property-mutators ./index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
