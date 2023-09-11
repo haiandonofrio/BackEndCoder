@@ -1,26 +1,9 @@
-class Product {
-    constructor(id, title, desc, price, thumbnail, code, stock) {
-        this.id = id;
-        this.title = title;
-        this.description = desc;
-        this.price = price;
-        this.thumbnail = thumbnail;
-        this.code = code;
-        this.stock = stock;
-    }
-}
-
 class ProductManager {
 
-    #Products = [];
-    #id = 0;
-
-    // constructor(title, desc, price, thumbnail, code, stock) {
-
-    //     this.product = new Product(this.#id++,title, desc, price, thumbnail, code, stock);
-    //     this.#Products.push(this.product);
-
-    // }
+    constructor() {
+        this.products = [];
+        this.productIdCounter = 1;
+    }
 
     setTitle(title) {
         this.product.title = title;
@@ -51,22 +34,45 @@ class ProductManager {
         this.product.stock = stock;
         return this;
     }
-    addProduct(title, desc, price, thumbnail, code, stock) {
-        const productById = this.#Products.find(product => product.code === code);
+
+    addProduct(title, description, price, thumbnail, code, stock) {
+
+        // Validamos que todos los campos sean obligatorios
+        if (!title || !description || !price || !thumbnail || !code || !stock) {
+            console.error("Todos los campos son obligatorios");
+            return;
+        }
+
+        const productById = this.products.find(product => product.code === code);
         if (productById) {
             throw new Error('El producto ya existe')
         } else {
-            this.product = new Product(this.#id++, title, desc, price, thumbnail, code, stock);
-            this.#Products.push(this.product);
+            // Agregamos el producto con un id autoincrementable
+            const product = {
+                id: this.productIdCounter++,
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                stock,
+            };
+
+            this.products.push(product);
+            console.log("Producto agregado:", product);
         }
     }
 
     getProducts() {
-        console.log(this.#Products)
+        if (this.products) {
+            console.log(this.products)
+        } else {
+            console.log('No existe ningún producto')
+        }
     }
 
     getProductById(Id) {
-        const productById = this.#Products.find(product => product.id === Id);
+        const productById = this.products.find(product => product.id === Id);
         if (!productById) {
             throw new Error('Product not found');
         } else {
@@ -75,17 +81,36 @@ class ProductManager {
     }
 }
 
-// Usage
-// const product = new Product('Remera','Remera Blanca',400,'FotoRemeraBlanca',1,10)
+// TESTING DEL CODIGO
 
-// console.log(product)
-const productManager = new ProductManager()
-productManager.getProducts();
-productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin Imagen', 'abc123', 25);
-// productManager1.build();
-productManager.getProducts();
-productManager.getProductById(2)
-// console.log(product);
-// productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin Imagen', 'abc123', 25);
+const productManager = new ProductManager();
+console.log("Productos iniciales:", productManager.getProducts()); // tiene que mostrar: "Productos iniciales: []"
 
+productManager.addProduct(
+    "producto prueba",
+    "Este es un producto prueba",
+    200,
+    "Sin imagen",
+    "abc123",
+    25
+);
+
+console.log("Productos después de agregar uno:", productManager.getProducts()); // tiene que mostrar información sobre el producto agregado
+
+// Intentamos agregar un producto con el mismo código
+productManager.addProduct(
+    "producto repetido",
+    "Este es un producto repetido",
+    150,
+    "Sin imagen",
+    "abc123",
+    10
+); // Debería mostrar un mensaje de error "El producto ya existe"
+
+// Buscar un producto por ID
+const foundProduct = productManager.getProductById(1);
+console.log("Producto encontrado por ID:", foundProduct); // tiene que mostrar información sobre el producto encontrado
+
+// Intentar buscar un producto inexistente por ID
+const notFoundProduct = productManager.getProductById(99);  // tiene que mostrar un mensaje de error "Product not found"
 
