@@ -105,8 +105,7 @@ class ProductManager {
         try {
             const fileContent = await fs.readFile(this.path, 'utf-8');
             if (fileContent) {
-                const productsFromFile = JSON.parse(fileContent);
-                const productIndex = productsFromFile.findIndex(product => product.id === id);
+                const productIndex = JSON.parse(fileContent).findIndex(product => product.id === id);
                 if (productIndex === -1) {
                     throw new Error(this.errors.ERROR_READING_FILE_ID);
                 }
