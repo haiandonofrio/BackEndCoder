@@ -105,7 +105,8 @@ class ProductManager {
         try {
             const fileContent = await fs.readFile(this.path, 'utf-8');
             if (fileContent) {
-                const productIndex = JSON.parse(fileContent).findIndex(product => product.id === id);
+                const productsFromFile = JSON.parse(fileContent);
+                const productIndex = productsFromFile.findIndex(product => product.id === id);
                 if (productIndex === -1) {
                     throw new Error(this.errors.ERROR_READING_FILE_ID);
                 }
@@ -115,7 +116,17 @@ class ProductManager {
                     productsFromFile[productIndex][fieldToUpdate] = newValue;
                 } else {
                     // If fieldToUpdate is not provided, update the whole product object
-                    productsFromFile[productIndex] = newValue;
+                    const { title, description, price, thumbnail, code, stock } = newValue
+                    const product = {
+                        id,
+                        title,
+                        description,
+                        price,
+                        thumbnail,
+                        code,
+                        stock,
+                    };
+                    productsFromFile[productIndex] = product;
                 }
 
                 // Update the local this.products array
@@ -211,7 +222,7 @@ productManager.getProducts() // tiene que mostrar: "Productos iniciales: []"
     } catch (error) {
         console.error('Error in async method:', error);
     }
-    // Update the product's price
+    // Delete product
     await productManager.deleteProduct(0);
 })();
 
