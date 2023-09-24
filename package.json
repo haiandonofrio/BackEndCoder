@@ -3,15 +3,17 @@
   "devDependencies": {
     "@babel/cli": "^7.22.15",
     "@babel/core": "^7.22.15",
-    "@babel/preset-env": "^7.22.15"
+    "@babel/preset-env": "^7.22.15",
+    "nodemon": "^3.0.1"
   },
   "dependencies": {
-    "@babel/plugin-transform-property-mutators": "^7.22.15"
+    "@babel/plugin-transform-property-mutators": "^7.22.15",
+    "express": "^4.18.2"
   },
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "babel --plugins @babel/plugin-transform-property-mutators ./index.js"
+    "dev": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
